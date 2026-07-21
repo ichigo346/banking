@@ -200,13 +200,24 @@ export const authFormSchema = (type: string) => z.object({
   firstName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
   lastName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
   address1: type === 'sign-in' ? z.string().optional() : z.string().min(5),
-  city: type === 'sign-in' ? z.string().optional() : z.string().min(6),
-  state: type === 'sign-in' ? z.string().optional() : z.string().min(2).max(2),
+  city: type === 'sign-in' ? z.string().optional() : z.string().min(2),
+  // Dwolla requires exactly a 2-letter US state abbreviation (e.g. "NY")
+  state: type === 'sign-in'
+    ? z.string().optional()
+    : z.string()
+        .length(2, { message: 'State must be a 2-letter abbreviation (e.g. NY, CA, TX)' })
+        .regex(/^[a-zA-Z]{2}$/, { message: 'State must be 2 letters only (e.g. NY)' }),
   postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(3).max(6),
   dateofBirth: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-  ssn: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+  // Dwolla requires exactly the last 4 digits of SSN
+  ssn: type === 'sign-in'
+    ? z.string().optional()
+    : z.string()
+        .length(4, { message: 'SSN must be exactly 4 digits (last 4 of your Social Security Number)' })
+        .regex(/^\d{4}$/, { message: 'SSN must be 4 numbers only (e.g. 1234)' }),
   // both
   email: z.string().email(),
   password: z.string().min(8),
 
 })
+

@@ -21,14 +21,15 @@ import { Input } from "@/components/ui/input"
 import CustomInput from './CustomInput';
 import { authFormSchema } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
-import SignIn from '@/app/(auth)/sign-in/page';
 import { useRouter } from 'next/navigation';
 import { getLoggedInUser, signIn, signUp } from '@/lib/actions/user.actions';
+import PlaidLink from './PlaidLink';
 
 const AuthForm = ({ type }: { type: string }) => {
     const router = useRouter();
     const [user, SetUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     const formSchema = authFormSchema(type);
@@ -53,13 +54,27 @@ const AuthForm = ({ type }: { type: string }) => {
 
     //2.Define a submit handler
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
-        setIsLoading(true)
+        setIsLoading(true);
+        setErrorMessage('');
 
         try {
             // sign up with Appwrite & create a plain link token
-
             if (type === 'sign-up') {
-                const newUser = await signUp(data);
+                const userData = {
+                    firstName: data.firstName!,
+                    lastName: data.lastName!,
+                    address1: data.address1!,
+                    city: data.city!,
+                    state: data.state!,
+                    postalCode: data.postalCode!,
+                    dateOfBirth: data.dateofBirth!,
+                    ssn: data.ssn!,
+                    email: data.email,
+                    password: data.password,
+                }
+
+
+                const newUser = await signUp(userData);
 
                 SetUser(newUser);
             }
@@ -72,8 +87,23 @@ const AuthForm = ({ type }: { type: string }) => {
 
                 if (response) router.push('/')
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
+            const msg = error?.message || '';
+            const responseStr = error?.response || '';
+            if (msg.includes('Invalid credentials') || msg.includes('401') || msg.includes('user_invalid_credentials')) {
+                setErrorMessage('Invalid email or password. Please try again.');
+            } else if (responseStr.includes('Ssn invalid') || msg.includes('Ssn')) {
+                setErrorMessage('Sign-up failed: SSN must be exactly 4 digits (last 4 of your Social Security Number, e.g. 1234).');
+            } else if (responseStr.includes('State must') || msg.includes('State must')) {
+                setErrorMessage('Sign-up failed: State must be a 2-letter abbreviation (e.g. NY, CA, TX).');
+            } else if (msg.includes('Dwolla') || msg.includes('ValidationError') || msg.includes('State must be')) {
+                setErrorMessage('Sign-up failed: check your State (2-letter code) and SSN (last 4 digits).');
+            } else if (msg.includes('already exists') || msg.includes('409') || msg.includes('user_already_exists')) {
+                setErrorMessage('An account with this email already exists. Please sign in instead.');
+            } else {
+                setErrorMessage('Something went wrong. Please try again.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -112,7 +142,7 @@ const AuthForm = ({ type }: { type: string }) => {
             </header>
             {user ? (
                 <div className="flex flex-col gap-4">
-                    {/* PlaidLink */}
+                    <PlaidLink user={user} variant="primary" />
                 </div>
             ) : (
                 <>
@@ -130,12 +160,12 @@ const AuthForm = ({ type }: { type: string }) => {
                                     </div>
 
                                     <div className="flex gap-4">
-                                        <CustomInput control={form.control} name='state' label="State" placeholder='Example: NY' />
+                                        <CustomInput control={form.control} name='state' label="State" placeholder='2-letter code: NY, CA, TX' />
                                         <CustomInput control={form.control} name='postalCode' label="Postal Code" placeholder='Example: 22202' />
                                     </div>
                                     <div className="flex gap-4">
                                         <CustomInput control={form.control} name='dateofBirth' label="Date of Birth" placeholder='YYY-MM-DD' />
-                                        <CustomInput control={form.control} name='ssn' label="SSN" placeholder='Example: 1234' />
+                                        <CustomInput control={form.control} name='ssn' label="SSN" placeholder='Last 4 digits: e.g. 1234' />
                                     </div>
                                 </>
                             )}
@@ -146,6 +176,9 @@ const AuthForm = ({ type }: { type: string }) => {
                             />
 
                             <div className='flex flex-col gap-4'>
+                                {errorMessage && (
+                                    <p className="text-14 font-normal text-red-500">{errorMessage}</p>
+                                )}
                                 <Button type="submit" disabled={isLoading} className="form-btn">
                                     {isLoading ? (
                                         <>
