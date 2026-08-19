@@ -148,7 +148,7 @@ export const createLinkToken = async (user: User) => {
                 client_user_id: user.$id
             },
             client_name: `${user.firstName} ${user.lastName}`,
-            products: ['auth'] as Products[],
+            products: ['auth', 'transactions'] as Products[],
             language: 'en',
             country_codes: ['US'] as CountryCode[],
         }
@@ -182,7 +182,7 @@ export const createBankAccount = async ({
                 accountId,
                 accessToken,
                 fundingSourceUrl,
-                sharableId,
+                sharebleId: sharableId,  // Appwrite attribute is named 'sharebleId' (typo in schema)
             }
         )
 
@@ -230,7 +230,7 @@ export const exchangePublicToken = async ({
         });
 
         // If the funding source URL is not created, throw an error
-        if (!fundingSourceUrl) throw Error;
+        if (!fundingSourceUrl) throw new Error("Failed to create or retrieve Dwolla funding source URL");
 
         // Create a bank account using the user ID, item ID, account ID, access token, funding source URL, and shareableId ID
         await createBankAccount({
@@ -256,6 +256,8 @@ export const exchangePublicToken = async ({
 
 export const getBanks = async ({ userId }: getBanksProps) => {
     try {
+        if (!userId) return null;
+
         const { database } = await createAdminClient();
 
         const banks = await database.listDocuments(
@@ -264,14 +266,19 @@ export const getBanks = async ({ userId }: getBanksProps) => {
             [Query.equal('userId', [userId])]
         )
 
+        if (!banks || !banks.documents) return null;
+
         return parseStringify(banks.documents);
     } catch (error) {
         console.log(error)
+        return null;
     }
 }
 
 export const getBank = async ({ documentId }: getBankProps) => {
     try {
+        if (!documentId) return null;
+
         const { database } = await createAdminClient();
 
         const bank = await database.listDocuments(
@@ -280,9 +287,12 @@ export const getBank = async ({ documentId }: getBankProps) => {
             [Query.equal('$id', [documentId])]
         )
 
+        if (!bank || !bank.documents || bank.documents.length === 0) return null;
+
         return parseStringify(bank.documents[0]);
     } catch (error) {
         console.log(error)
+        return null;
     }
 }
 

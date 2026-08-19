@@ -34,7 +34,17 @@ export const createFundingSource = async (
                 plaidToken: options.plaidToken,
             })
             .then((res) => res.headers.get("location"));
-    } catch (err) {
+    } catch (err: any) {
+        // If the bank already exists, Dwolla returns a DuplicateResource error
+        // with the existing funding source URL in _links.about.href — reuse it.
+        const body = err?.body ?? err?.response?.body;
+        if (body?.code === "DuplicateResource" && body?._links?.about?.href) {
+            console.warn(
+                "Funding source already exists. Reusing existing URL:",
+                body._links.about.href
+            );
+            return body._links.about.href as string;
+        }
         console.error("Creating a Funding Source Failed: ", err);
     }
 };
