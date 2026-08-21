@@ -6,13 +6,15 @@ import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 import { redirect } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 const Home = async ({ searchParams }: SearchParamProps) => {
     const { id, page } = await searchParams;
     const currentPage = Number(page as string) || 1;
     const loggedIn = await getLoggedInUser();
-    const accounts = await getAccounts({ userId: loggedIn.$id });
-
     if (!loggedIn) redirect('/sign-in');
+
+    const accounts = await getAccounts({ userId: loggedIn.$id });
 
     if (!accounts) return;
 

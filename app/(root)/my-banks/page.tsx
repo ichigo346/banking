@@ -2,10 +2,15 @@ import BankCard from '@/components/BankCard';
 import HeaderBox from '@/components/HeaderBox'
 import { getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
+import { redirect } from 'next/navigation';
 import React from 'react'
+
+export const dynamic = 'force-dynamic';
 
 const MyBanks = async () => {
     const loggedIn = await getLoggedInUser();
+    if (!loggedIn) redirect('/sign-in');
+
     const accounts = await getAccounts({ userId: loggedIn.$id });
 
     return (
