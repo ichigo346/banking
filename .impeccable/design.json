@@ -1,0 +1,144 @@
+﻿{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-21T15:36:00Z",
+  "title": "Design System: Horizon",
+  "extensions": {
+    "colorMeta": {
+      "bank-blue":          { "role": "primary",   "displayName": "Horizon Blue",        "canonical": "#0179FE", "tonalRamp": ["#001F54","#003A8C","#0056C2","#0068E1","#0179FE","#3391FE","#66AFFF","#99CBFF"] },
+      "bank-blue-light":    { "role": "primary",   "displayName": "Sky Reach",           "canonical": "#4893FF", "tonalRamp": ["#0B2547","#1A4A8A","#2B6BC0","#3B80E8","#4893FF","#6FAAFF","#99C3FF","#C4DDFF"] },
+      "indigo-mid":         { "role": "secondary", "displayName": "Indigo Mid",           "canonical": "#6172F3", "tonalRamp": ["#1C1E6B","#2D35A8","#3E4DD4","#5263F0","#6172F3","#828FF7","#ABABFB","#D3D6FD"] },
+      "indigo-deep":        { "role": "secondary", "displayName": "Indigo Deep",          "canonical": "#3538CD", "tonalRamp": ["#0F1047","#1B1F80","#272EB0","#3033C0","#3538CD","#5B5FDB","#8889E7","#BBBBF3"] },
+      "success-green":      { "role": "tertiary",  "displayName": "Signal Green",         "canonical": "#039855", "tonalRamp": ["#01290F","#025520","#037832","#039144","#039855","#1DB56C","#55CF92","#99E5BA"] },
+      "success-green-dark": { "role": "tertiary",  "displayName": "Signal Green Dark",    "canonical": "#027A48", "tonalRamp": ["#01200D","#024122","#026534","#027346","#027A48","#0F9A5E","#44BE88","#88D9B5"] },
+      "pink-accent":        { "role": "tertiary",  "displayName": "Blush Accent",         "canonical": "#EE46BC", "tonalRamp": ["#4A1035","#851160","#B61685","#D929A4","#EE46BC","#F272CC","#F7A0DE","#FCD0EF"] },
+      "pink-deep":          { "role": "tertiary",  "displayName": "Blush Deep",           "canonical": "#C11574", "tonalRamp": ["#3A0622","#6D0D49","#961065","#AF1370","#C11574","#D53B8D","#E472AE","#F0A8CF"] },
+      "navy-brand":         { "role": "neutral",   "displayName": "Navy Brand",           "canonical": "#00214F", "tonalRamp": ["#000A18","#001028","#001538","#001B45","#00214F","#1A3B6B","#4869A0","#8FA5C8"] },
+      "charcoal":           { "role": "neutral",   "displayName": "Charcoal",             "canonical": "#344054", "tonalRamp": ["#0D1219","#1B2330","#243040","#2D3B4C","#344054","#4F596E","#7E8D9D","#B5BEC9"] },
+      "gray-body":          { "role": "neutral",   "displayName": "Stone Body",           "canonical": "#475467", "tonalRamp": ["#151A20","#263140","#344454","#3E5060","#475467","#63717F","#93A0AF","#C6CDD5"] },
+      "gray-muted":         { "role": "neutral",   "displayName": "Muted Gray",           "canonical": "#667085", "tonalRamp": ["#1A1D23","#333744","#465060","#586370","#667085","#828EA0","#AABAC8","#D0D7E0"] },
+      "gray-border":        { "role": "neutral",   "displayName": "Border Gray",          "canonical": "#D0D5DD", "tonalRamp": ["#2A2D33","#565C68","#838998","#AAAFBA","#D0D5DD","#DDE0E7","#EAEDF1","#F4F6F8"] },
+      "gray-divider":       { "role": "neutral",   "displayName": "Divider Gray",         "canonical": "#EAECF0", "tonalRamp": ["#2E3038","#5A5E6A","#888D99","#B3B8C4","#EAECF0","#EEF0F4","#F4F5F8","#FAFBFC"] },
+      "gray-surface":       { "role": "neutral",   "displayName": "Page Ground",          "canonical": "#FCFCFD", "tonalRamp": ["#303033","#606062","#909091","#B8B8B9","#FCFCFD","#FDFDFD","#FEFEFE","#FFFFFF"] },
+      "sky-auth":           { "role": "neutral",   "displayName": "Auth Canvas",          "canonical": "#F3F9FF", "tonalRamp": ["#1A3A5C","#2E6399","#4085C2","#5999D6","#F3F9FF","#F6FBFF","#F9FDFF","#FFFFFF"] },
+      "debit-surface":      { "role": "neutral",   "displayName": "Debit Row Tint",       "canonical": "#FFFBFA", "tonalRamp": ["#4A3030","#7A5050","#AA7070","#CC9898","#FFFBFA","#FFFCFB","#FFFDFC","#FFFFFF"] },
+      "credit-surface":     { "role": "neutral",   "displayName": "Credit Row Tint",      "canonical": "#F6FEF9", "tonalRamp": ["#1A4030","#2E6A4A","#429464","#5BB07E","#F6FEF9","#F8FEF9","#FAFEFB","#FDFFFD"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Brand Display", "purpose": "Horizon wordmark in sidebar and auth header. One instance per surface." },
+      "headline": { "displayName": "Page Headline", "purpose": "Top-level page title. One per authenticated route." },
+      "title":    { "displayName": "Section Title",  "purpose": "Sub-section headers within a page. Multiple allowed per route." },
+      "body":     { "displayName": "Body",           "purpose": "All descriptive text, table content, form helpers, subtext. Max 75ch." },
+      "label":    { "displayName": "Label",          "purpose": "Badges, timestamps, card masks, metadata. Never uppercase." }
+    },
+    "shadows": [
+      { "name": "form",       "value": "0px 1px 2px 0px rgba(16,24,40,0.05)",                                                          "purpose": "Buttons and form inputs — barely perceptible tactile definition against white." },
+      { "name": "chart",      "value": "0px 1px 3px 0px rgba(16,24,40,0.10), 0px 1px 2px 0px rgba(16,24,40,0.06)",                    "purpose": "Total Balance container and data panels. Separates from page ground." },
+      { "name": "profile",    "value": "0px 12px 16px -4px rgba(16,24,40,0.08), 0px 4px 6px -2px rgba(16,24,40,0.03)",                "purpose": "Circular profile avatar — floats above the gradient-mesh profile banner." },
+      { "name": "creditCard", "value": "8px 10px 16px 0px rgba(0,0,0,0.05)",                                                           "purpose": "Bank cards — subtle physical presence in the stacked card pattern." }
+    ],
+    "motion": [
+      { "name": "accordion",  "value": "0.2s ease-out", "purpose": "Radix accordion open/close (accordion-down / accordion-up keyframes)." }
+    ],
+    "breakpoints": [
+      { "name": "sm",  "value": "640px" },
+      { "name": "md",  "value": "768px" },
+      { "name": "lg",  "value": "1024px" },
+      { "name": "xl",  "value": "1280px" },
+      { "name": "2xl", "value": "1536px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main call-to-action. Blue gradient background, white text. Used for form submit, Plaid link CTA.",
+      "html": "<button class=\"ds-btn-primary\">Pay Now</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(90deg, #0179FE 0%, #4893FF 100%); color: #ffffff; font-family: Inter, system-ui, sans-serif; font-size: 16px; font-weight: 600; line-height: 24px; padding: 10px 16px; border: 1px solid #0179FE; border-radius: 8px; cursor: pointer; box-shadow: 0px 1px 2px 0px rgba(16,24,40,0.05); transition: opacity 0.15s ease, transform 0.15s ease; text-decoration: none; } .ds-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 2px solid #0179FE; outline-offset: 2px; } .ds-btn-primary:active { transform: translateY(0); opacity: 1; } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }"
+    },
+    {
+      "name": "Ghost Button / Link",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action. Transparent background, blue text. Used for auth footer toggles and sidebar links.",
+      "html": "<button class=\"ds-btn-ghost\">Sign up instead</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #0179FE; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; line-height: 20px; padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s ease, color 0.15s ease; text-decoration: none; } .ds-btn-ghost:hover { background: rgba(1, 121, 254, 0.06); } .ds-btn-ghost:focus-visible { outline: 2px solid #0179FE; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Standard form field. White background, gray border, 8px radius. Used across auth and payment transfer forms.",
+      "html": "<div class=\"ds-input-wrap\"><label class=\"ds-input-label\">Email address</label><input class=\"ds-input\" type=\"email\" placeholder=\"Enter your email\" /></div>",
+      "css": ".ds-input-wrap { display: flex; flex-direction: column; gap: 6px; } .ds-input-label { font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; line-height: 20px; color: #344054; } .ds-input { font-family: Inter, system-ui, sans-serif; font-size: 16px; line-height: 24px; color: #344054; background: #ffffff; border: 1px solid #D0D5DD; border-radius: 8px; padding: 10px 14px; box-shadow: 0px 1px 2px 0px rgba(16,24,40,0.05); transition: border-color 0.15s ease, box-shadow 0.15s ease; outline: none; width: 100%; } .ds-input::placeholder { color: #667085; } .ds-input:focus { border-color: #0179FE; box-shadow: 0px 1px 2px 0px rgba(16,24,40,0.05), 0 0 0 3px rgba(1,121,254,0.12); }"
+    },
+    {
+      "name": "Sidebar Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link-active",
+      "description": "Left sidebar navigation item. Default is transparent; active state uses blue gradient.",
+      "html": "<nav class=\"ds-sidebar-nav\"><a href=\"#\" class=\"ds-nav-link ds-nav-link--active\"><span class=\"ds-nav-icon\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><polyline points=\"9 22 9 12 15 12 15 22\"/></svg></span><span class=\"ds-nav-label\">Home</span></a><a href=\"#\" class=\"ds-nav-link\"><span class=\"ds-nav-icon\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\" ry=\"2\"/><line x1=\"8\" y1=\"21\" x2=\"16\" y2=\"21\"/><line x1=\"12\" y1=\"17\" x2=\"12\" y2=\"21\"/></svg></span><span class=\"ds-nav-label\">My Banks</span></a></nav>",
+      "css": ".ds-sidebar-nav { display: flex; flex-direction: column; gap: 4px; } .ds-nav-link { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; text-decoration: none; color: #344054; font-family: Inter, system-ui, sans-serif; font-size: 16px; font-weight: 600; line-height: 24px; transition: background 0.15s ease, color 0.15s ease; } .ds-nav-link:hover { background: rgba(1, 121, 254, 0.06); } .ds-nav-link--active { background: linear-gradient(90deg, #0179FE 0%, #4893FF 100%); color: #ffffff; } .ds-nav-icon { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; flex-shrink: 0; } .ds-nav-label { white-space: nowrap; overflow: hidden; }"
+    },
+    {
+      "name": "Bank Card",
+      "kind": "card",
+      "refersTo": "bank-card",
+      "description": "Signature component. Gradient credit-card visual with texture overlay, account info, and card network marks.",
+      "html": "<div class=\"ds-bank-card\"><div class=\"ds-bank-card__content\"><div class=\"ds-bank-card__top\"><span class=\"ds-bank-card__name\">Checking Account</span><span class=\"ds-bank-card__balance\">$12,450.00</span></div><div class=\"ds-bank-card__footer\"><span class=\"ds-bank-card__holder\">Justin Katoto</span><span class=\"ds-bank-card__mask\">•••• •••• •••• 4242</span></div></div><div class=\"ds-bank-card__icon-col\"><span class=\"ds-bank-card__paypass\">&#9901;</span><span class=\"ds-bank-card__network\">MC</span></div></div>",
+      "css": ".ds-bank-card { position: relative; display: flex; justify-content: space-between; width: 320px; height: 190px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); background: linear-gradient(90deg, #0179FE 0%, #4893FF 100%); box-shadow: 8px 10px 16px 0px rgba(0,0,0,0.05); overflow: hidden; } .ds-bank-card__content { position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; max-width: 228px; padding: 20px 20px 16px; } .ds-bank-card__top { display: flex; flex-direction: column; gap: 4px; } .ds-bank-card__name { font-family: Inter, system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #ffffff; } .ds-bank-card__balance { font-family: \"IBM Plex Serif\", Georgia, serif; font-size: 22px; font-weight: 900; color: #ffffff; } .ds-bank-card__footer { display: flex; flex-direction: column; gap: 4px; } .ds-bank-card__holder { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; color: #ffffff; } .ds-bank-card__mask { font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1px; color: #ffffff; } .ds-bank-card__icon-col { position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; padding: 20px 20px 20px 0; } .ds-bank-card__paypass { font-size: 20px; color: rgba(255,255,255,0.9); } .ds-bank-card__network { font-family: Inter, system-ui, sans-serif; font-size: 13px; font-weight: 800; color: #ffffff; letter-spacing: 0.05em; }"
+    },
+    {
+      "name": "Category Badge",
+      "kind": "chip",
+      "refersTo": "category-badge-success",
+      "description": "Pill badge with a color dot for transaction category and status labels in tables.",
+      "html": "<div class=\"ds-badge ds-badge--success\"><span class=\"ds-badge__dot\"></span><span class=\"ds-badge__label\">Success</span></div><div class=\"ds-badge ds-badge--debit\" style=\"margin-top:8px\"><span class=\"ds-badge__dot ds-badge__dot--debit\"></span><span class=\"ds-badge__label ds-badge__label--debit\">Processing</span></div>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 6px; border-radius: 16px; border: 1.5px solid; } .ds-badge--success { background: #F6FEF9; border-color: #ABEFC6; } .ds-badge--debit { background: #FFF1F3; border-color: #FECDD6; } .ds-badge__dot { width: 8px; height: 8px; border-radius: 50%; background: #039855; flex-shrink: 0; } .ds-badge__dot--debit { background: #C11574; } .ds-badge__label { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 500; color: #027A48; line-height: 16px; } .ds-badge__label--debit { color: #C11574; }"
+    },
+    {
+      "name": "Transaction Table Row",
+      "kind": "custom",
+      "description": "Table row with tonal debit/credit background tint and semantic amount coloring.",
+      "html": "<table class=\"ds-tx-table\"><thead><tr><th class=\"ds-tx-head\">Transaction</th><th class=\"ds-tx-head\">Amount</th><th class=\"ds-tx-head\">Status</th><th class=\"ds-tx-head\">Date</th></tr></thead><tbody><tr class=\"ds-tx-row ds-tx-row--debit\"><td class=\"ds-tx-cell\">Amazon Purchase</td><td class=\"ds-tx-cell ds-tx-amount--debit\">-$49.99</td><td class=\"ds-tx-cell\"><div class=\"ds-badge ds-badge--debit\"><span class=\"ds-badge__dot ds-badge__dot--debit\"></span><span class=\"ds-badge__label ds-badge__label--debit\">Processing</span></div></td><td class=\"ds-tx-cell\">Aug 21, 2026</td></tr><tr class=\"ds-tx-row ds-tx-row--credit\"><td class=\"ds-tx-cell\">Salary Deposit</td><td class=\"ds-tx-cell ds-tx-amount--credit\">$3,200.00</td><td class=\"ds-tx-cell\"><div class=\"ds-badge ds-badge--success\"><span class=\"ds-badge__dot\"></span><span class=\"ds-badge__label\">Success</span></div></td><td class=\"ds-tx-cell\">Aug 20, 2026</td></tr></tbody></table>",
+      "css": ".ds-tx-table { width: 100%; border-collapse: collapse; font-family: Inter, system-ui, sans-serif; } .ds-tx-head { padding: 8px; text-align: left; font-size: 12px; font-weight: 500; color: #667085; background: #F9FAFB; border-bottom: 1px solid #EAECF0; } .ds-tx-row--debit { background: #FFFBFA; } .ds-tx-row--credit { background: #F6FEF9; } .ds-tx-cell { padding: 12px 8px; font-size: 14px; color: #344054; border-bottom: 1px solid #EAECF0; vertical-align: middle; } .ds-tx-amount--debit { font-weight: 600; color: #C11574; } .ds-tx-amount--credit { font-weight: 600; color: #039855; } .ds-badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 6px; border-radius: 16px; border: 1.5px solid; } .ds-badge--success { background: #F6FEF9; border-color: #ABEFC6; } .ds-badge--debit { background: #FFF1F3; border-color: #FECDD6; } .ds-badge__dot { width: 8px; height: 8px; border-radius: 50%; background: #039855; } .ds-badge__dot--debit { background: #C11574; } .ds-badge__label { font-size: 12px; font-weight: 500; color: #027A48; } .ds-badge__label--debit { color: #C11574; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Trusted Navigator",
+    "overview": "Horizon is built on calm authority. The interface never shouts, never decorates for its own sake — every color, every divider, every space exists to help a user understand where their money is and what to do next. The blue gradient that anchors the brand is not accent color for flair; it is a deliberate signal of reliability and forward momentum, used sparingly so it retains meaning when it appears.\n\nThe layout is structured and predictable. The left sidebar is a fixed landmark — always there, always quiet. The main content area opens wide and breathes. The right sidebar carries a compact personal summary so users see their own identity alongside their data. This tri-column architecture is never disrupted; orientation is a product promise, not a layout detail.\n\nDepth is purely tonal. Surfaces at rest are flat; hierarchy is communicated through lightness steps — the near-white page ground, the white panels, the blue-tinted authentication canvas. Shadows exist in the token library for rare interactive moments but are not used to layer static surfaces. The system rewards careful reading, not visual spectacle.",
+    "keyCharacteristics": [
+      "Blue gradient is the sole primary accent; used on active nav items, primary buttons, and bank card surfaces only",
+      "Two typefaces with strict role separation: IBM Plex Serif for brand marks, Inter for all functional UI",
+      "Tonal depth only; shadows reserved for interactive and floating states",
+      "Debit/credit color coding is the only place color carries semantic meaning in data rows",
+      "All authenticated screens share the same shell; orientation is always maintained"
+    ],
+    "rules": [
+      { "name": "The Blue Gradient Rule",  "body": "The bank-gradient (#0179FE → #4893FF) is the only background allowed on primary buttons, active nav items, and bank cards. It never appears on decorative surfaces, backgrounds, or section dividers. Its rarity is its authority.", "section": "colors" },
+      { "name": "The Semantic Color Rule", "body": "Green is for credit and success only. Warm-pink/red is for debit and error only. Neither color may appear in navigation, buttons, or decorative elements.", "section": "colors" },
+      { "name": "The Two-Font Rule",       "body": "IBM Plex Serif is the brand voice; Inter is the product voice. No third typeface is permitted. IBM Plex Serif appears only in wordmarks and financial figures on bank cards.", "section": "typography" },
+      { "name": "The Three-Column Rule",   "body": "The shell layout is invariant across all authenticated routes. No page may add a fourth column, remove the sidebar, or break the established column widths. Orientation is a product promise.", "section": "layout" },
+      { "name": "The Flat-By-Default Rule","body": "Static content surfaces carry no shadow. Shadows appear only on interactive components or explicitly floating elements. If a surface doesn't move or float, it doesn't shadow.", "section": "elevation" },
+      { "name": "The No-Sharp Rule",       "body": "Every interactive surface, card, badge, and container has a border-radius of at least 8px. Zero-radius corners are not permitted anywhere in the Horizon UI.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do use the blue gradient (#0179FE → #4893FF) exclusively for primary actions, active nav items, and bank card surfaces.",
+      "Do use IBM Plex Serif bold only for the Horizon wordmark and bank card balance figures.",
+      "Do maintain the three-column shell layout across all authenticated routes.",
+      "Do use tonal background shifts (#FCFCFD → #FFFFFF) to separate surface layers; never add a shadow to a static panel.",
+      "Do apply the form shadow to buttons and inputs and chart shadow to data panel containers.",
+      "Do use Signal Green (#039855) for credit amounts and Blush Deep (#C11574) for debit amounts only.",
+      "Do keep Inter at 14px/20px for all body copy. Scale up to 16px only for form inputs and prominent secondary text."
+    ],
+    "donts": [
+      "Don't use the blue gradient as a page background, section fill, or decorative element.",
+      "Don't introduce a third typeface. IBM Plex Serif for brand marks, Inter for everything else.",
+      "Don't add shadows to static, non-interactive surfaces. Tonal layering only.",
+      "Don't use green or pink/red outside of transaction amount and status contexts.",
+      "Don't break the sidebar at any authenticated route. The three-column shell is invariant.",
+      "Don't use uppercase type — not for labels, badges, nav items, or headers.",
+      "Don't round corners to less than 8px on any interactive element or card."
+    ]
+  }
+}

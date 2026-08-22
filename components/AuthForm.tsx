@@ -128,14 +128,14 @@ const AuthForm = ({ type }: { type: string }) => {
                         {user
                             ? 'Link Account'
                             : type === 'sign-in'
-                                ? 'Sign-In'
-                                : 'Sign-Up'
+                                ? 'Sign In'
+                                : 'Sign Up'
                         }
                     </h1>
                     <p className='text-16 font-normal text-gray-600'>
                         {user
-                            ? 'Link your account to get sarted'
-                            : 'please enter your details'
+                            ? 'Link your account to get started'
+                            : 'Please enter your details to continue'
                         }
                     </p>
                 </div>
@@ -164,7 +164,7 @@ const AuthForm = ({ type }: { type: string }) => {
                                         <CustomInput control={form.control} name='postalCode' label="Postal Code" placeholder='Example: 22202' />
                                     </div>
                                     <div className="flex gap-4">
-                                        <CustomInput control={form.control} name='dateofBirth' label="Date of Birth" placeholder='YYY-MM-DD' />
+                                        <CustomInput control={form.control} name='dateofBirth' label="Date of Birth" placeholder='YYYY-MM-DD' />
                                         <CustomInput control={form.control} name='ssn' label="SSN" placeholder='Last 4 digits: e.g. 1234' />
                                     </div>
                                 </>
@@ -185,19 +185,19 @@ const AuthForm = ({ type }: { type: string }) => {
                                             <Loader2 size={20} className="animate-spin" /> &nbsp; Loading...
                                         </>
                                     ) : type === "sign-in"
-                                        ? 'Sign-in' : 'Sign-up'}
+                                        ? 'Sign In' : 'Sign Up'}
                                 </Button>
                             </div>
                         </form>
 
                         <footer className="flex justify-center gap-1">
-                            <p className='text-14 font-normal text-gary-600'>
+                            <p className='text-14 font-normal text-gray-600'>
                                 {type === 'sign-in'
-                                    ? "Dont have an account?"
+                                    ? "Don't have an account?"
                                     : "Already have an account?"
                                 }</p>
                             <Link href={type === 'sign-in' ? '/sign-up' : '/sign-in'} className="form-link">
-                                {type === 'sign-in' ? 'sign-up' : 'sign-in'}
+                                {type === 'sign-in' ? 'Sign up' : 'Sign in'}
                             </Link>
                         </footer>
                     </Form>

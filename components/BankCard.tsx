@@ -5,11 +5,9 @@ import React from 'react'
 import Copy from './Copy'
 
 const BankCard = ({ account, userName, showBalance }: CreditCardProps) => {
-
-    console.log(account);
     return (
         <div className="flex flex-col">
-            <Link href={`/transaction-history/?id=${account.appwriteItemId}`} className="bank-card">
+            <Link href={`/transaction-history/?id=${account?.appwriteItemId}`} className="bank-card transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-xl">
                 <div className="bank-card_content">
                     <div>
                         <h1 className="text-16 font-semibold text-white">

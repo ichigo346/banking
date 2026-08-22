@@ -18,7 +18,7 @@ const MyBanks = async () => {
             <div className="my-banks">
                 <HeaderBox
                     title="Manage my Banks"
-                    subtext="Efffortlessly manage your banking activities."
+                    subtext="Effortlessly manage your linked bank accounts, view balances, and copy account details."
                 />
 
                 <div className="space-y-4">

@@ -19,10 +19,10 @@ const Transfer = async () => {
         <section className="payment-transfer">
             <HeaderBox
                 title='Payment Transfer'
-                subtext="Please provide any specificdetails or notes related to the payment transfer"
+                subtext="Transfer funds securely between linked accounts or send money to another user."
             />
 
-            <section className="size-ful pt-5">
+            <section className="size-full pt-5">
                 <PaymentTransferForm accounts={accountsData} />
             </section>
         </section>
