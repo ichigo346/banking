@@ -1,3 +1,4 @@
+import CategoryBudgetWidget from '@/components/CategoryBudgetWidget';
 import HeaderBox from '@/components/HeaderBox';
 import RecentTransactions from '@/components/RecentTransactions';
 import RightSidebar from '@/components/RightSidebar';
@@ -40,6 +41,8 @@ const Home = async ({ searchParams }: SearchParamProps) => {
                         totalCurrentBalance={accounts?.totalCurrentBalance}
                     />
                 </header>
+
+                <CategoryBudgetWidget transactions={account?.transactions} />
 
                 <RecentTransactions
                     accounts={accountsData}
