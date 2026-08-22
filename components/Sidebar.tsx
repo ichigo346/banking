@@ -25,7 +25,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
             width={34}
             height={34}
             alt="horizon Logo"
-            className="size[24px] max-xl:size-14"
+            className="size-6 max-xl:size-14"
           />
           <h1 className='sidebar-logo'>Horizon</h1>
         </Link>
@@ -47,7 +47,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
                   alt={item.label}
                   fill
                   className={cn({
-                    'brightness-[3] invert-0': isActive
+                    'brightness-[3] invert': isActive
                   })}
                 />
               </div>

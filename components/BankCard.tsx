@@ -27,7 +27,7 @@ const BankCard = ({ account, userName, showBalance }: CreditCardProps) => {
                                 ●● / ●●
                             </h2>
                         </div>
-                        <p className="text-14 font-semibold tracking-[1.px] text-white">
+                        <p className="text-14 font-semibold tracking-[1px] text-white">
                             ●●●● ●●●● ●●●● <span className="text-16">{account?.mask}</span>
                         </p>
                     </article>
@@ -54,7 +54,7 @@ const BankCard = ({ account, userName, showBalance }: CreditCardProps) => {
                     width={316}
                     height={190}
                     alt="lines"
-                    className="absolute top-0 left-0"
+                    className="absolute top-0 left-0 rounded-[20px] object-cover pointer-events-none size-full"
                 />
             </Link>
 

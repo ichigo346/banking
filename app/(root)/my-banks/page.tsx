@@ -25,12 +25,12 @@ const MyBanks = async () => {
                     <h2 className="header-2">
                         Your cards
                     </h2>
-                    <div className="flex-wrap gap-6">
+                    <div className="flex flex-wrap gap-6">
                         {accounts && accounts.data.map((a: Account) => (
                             <BankCard
                                 key={a.id}
                                 account={a}
-                                userName={loggedIn?.firstName}
+                                userName={`${loggedIn?.firstName} ${loggedIn?.lastName}`}
                             />
                         ))}
                     </div>

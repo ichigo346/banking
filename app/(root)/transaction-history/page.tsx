@@ -49,7 +49,7 @@ const TransactionHistory = async ({ searchParams }: SearchParamProps) => {
                         <p className="text-14 text-blue-25">
                             {account?.data.officialName}
                         </p>
-                        <p className="text-14 font-semibold tracking-[1.px] text-white">
+                        <p className="text-14 font-semibold tracking-[1px] text-white">
                             ●●●● ●●●● ●●●● {account?.data.mask}
                         </p>
                     </div>
@@ -65,7 +65,7 @@ const TransactionHistory = async ({ searchParams }: SearchParamProps) => {
                         transactions={currentTransactions}
                     />
                     {totalPages > 1 && (
-                        <div className="my-4-full">
+                        <div className="my-4 flex w-full justify-center">
                             <Pagination totalPages={totalPages} page={currentPage} />
                         </div>
                     )}
