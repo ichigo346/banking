@@ -1,5 +1,6 @@
 import CommandPaletteWrapper from "@/components/CommandPaletteWrapper";
 import MobileNav from "@/components/MobileNav";
+import PageTransition from "@/components/PageTransition";
 import Sidebar from "@/components/Sidebar";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import Image from "next/image";
@@ -26,7 +27,9 @@ export default async function RootLayout({
                             <MobileNav user={loggedIn} />
                         </div>
                     </div>
-                    {children}
+                    <PageTransition className="flex-1 overflow-hidden">
+                        {children}
+                    </PageTransition>
                 </div>
             </main>
         </CommandPaletteWrapper>

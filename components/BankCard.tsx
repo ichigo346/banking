@@ -1,13 +1,21 @@
+"use client";
+
 import { formatAmount } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import Copy from './Copy'
+import { motion } from 'framer-motion'
 
 const BankCard = ({ account, userName, showBalance }: CreditCardProps) => {
     return (
-        <div className="flex flex-col">
-            <Link href={`/transaction-history/?id=${account?.appwriteItemId}`} className="bank-card transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-xl">
+        <motion.div
+            className="flex flex-col"
+            whileHover={{ y: -4, scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        >
+            <Link href={`/transaction-history/?id=${account?.appwriteItemId}`} className="bank-card shadow-creditCard">
                 <div className="bank-card_content">
                     <div>
                         <h1 className="text-16 font-semibold text-white">
@@ -59,7 +67,7 @@ const BankCard = ({ account, userName, showBalance }: CreditCardProps) => {
             </Link>
 
             {showBalance && <Copy title={account?.sharebleId} />}
-        </div>
+        </motion.div>
     )
 }
 export default BankCard

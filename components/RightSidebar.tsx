@@ -5,9 +5,16 @@ import BankCard from './BankCard'
 import { countTransactionCategories } from '@/lib/utils'
 import Category from './Category'
 
+const defaultCategories: CategoryCount[] = [
+    { name: "Subscriptions", count: 0, totalCount: 1 },
+    { name: "Food and Drink", count: 0, totalCount: 1 },
+    { name: "Travel", count: 0, totalCount: 1 },
+    { name: "Transfer", count: 0, totalCount: 1 },
+];
+
 const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
     const categories: CategoryCount[] = countTransactionCategories(transactions);
-
+    const displayCategories = categories.length > 0 ? categories : defaultCategories;
 
     return (
         <aside className="right-sidebar">
@@ -70,12 +77,15 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
                 )}
 
                 <div className="mt-10 flex flex-1 flex-col gap-6">
-                    <h2 className="header-2">Top categories</h2>
+                    <div className="flex items-center justify-between">
+                        <h2 className="header-2">Top categories</h2>
+                        {categories.length === 0 && (
+                            <span className="text-12 font-medium text-gray-400">Sample preview</span>
+                        )}
+                    </div>
                     <div className='space-y-2'>
-                        {categories.map((category, index) => (
+                        {displayCategories.map((category) => (
                             <Category key={category.name} category={category} />
-
-
                         ))}
                     </div>
                 </div>

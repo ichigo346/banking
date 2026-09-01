@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Table,
     TableBody,
@@ -8,6 +10,7 @@ import {
 } from "@/components/ui/table"
 import { cn, formatAmount, formatDateTime, getTransactionStatus, removeSpecialCharacters } from "@/lib/utils"
 import { ReceiptText } from "lucide-react"
+import { motion } from "framer-motion"
 
 // Category pill styles matching reference design (outline pill with dot)
 const categoryPillStyles: Record<string, { border: string; text: string; dot: string }> = {
@@ -76,10 +79,17 @@ const TransactionAvatar = ({ name }: { name: string }) => {
     );
 };
 
+const MotionTableRow = motion.create(TableRow);
+
 const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
     if (!transactions || transactions.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-gray-200 bg-gray-25/50 p-12 text-center">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col items-center justify-center rounded-lg border border-dashed border-gray-200 bg-gray-25/50 p-12 text-center"
+            >
                 <div className="flex size-12 items-center justify-center rounded-full bg-blue-25 text-bankGradient">
                     <ReceiptText className="size-6" />
                 </div>
@@ -87,7 +97,7 @@ const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
                 <p className="mt-1 text-14 text-gray-500 max-w-sm">
                     There are no transactions recorded for this account yet. Transferred or synced funds will appear here.
                 </p>
-            </div>
+            </motion.div>
         );
     }
 
@@ -103,7 +113,7 @@ const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {transactions.map((t: Transaction) => {
+                {transactions.map((t: Transaction, idx: number) => {
                     const status = getTransactionStatus(new Date(t.date));
                     const rawAmount = Math.abs(Number(t.amount) || 0).toFixed(2);
 
@@ -119,8 +129,15 @@ const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
                     });
 
                     return (
-                        <TableRow
+                        <MotionTableRow
                             key={t.id}
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                duration: 0.3,
+                                delay: Math.min(idx * 0.03, 0.3),
+                                ease: "easeOut",
+                            }}
                             className={cn(
                                 "border-b border-gray-100 transition-colors hover:bg-gray-50/80",
                                 isCredit ? "bg-[#F6FEF9]/60" : "bg-white"
@@ -155,7 +172,7 @@ const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
                             <TableCell className="py-4 pl-6 pr-4 text-right whitespace-nowrap">
                                 <CategoryBadge category={t.category || "General"} />
                             </TableCell>
-                        </TableRow>
+                        </MotionTableRow>
                     );
                 })}
             </TableBody>

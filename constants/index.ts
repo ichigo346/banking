@@ -63,6 +63,71 @@ export const topCategoryStyles = {
     },
     icon: "/icons/monitor.svg",
   },
+  Food: {
+    bg: "bg-pink-25",
+    circleBg: "bg-pink-100",
+    text: {
+      main: "text-pink-900",
+      count: "text-pink-700",
+    },
+    progress: {
+      bg: "bg-pink-100",
+      indicator: "bg-pink-700",
+    },
+    icon: "/icons/shopping-bag.svg",
+  },
+  Subscriptions: {
+    bg: "bg-blue-25",
+    circleBg: "bg-blue-100",
+    text: {
+      main: "text-blue-900",
+      count: "text-blue-700",
+    },
+    progress: {
+      bg: "bg-blue-100",
+      indicator: "bg-blue-700",
+    },
+    icon: "/icons/monitor.svg",
+  },
+  Transfer: {
+    bg: "bg-amber-25",
+    circleBg: "bg-amber-100",
+    text: {
+      main: "text-amber-900",
+      count: "text-amber-700",
+    },
+    progress: {
+      bg: "bg-amber-100",
+      indicator: "bg-amber-700",
+    },
+    icon: "/icons/money-send.svg",
+  },
+  Payment: {
+    bg: "bg-purple-25",
+    circleBg: "bg-purple-100",
+    text: {
+      main: "text-purple-900",
+      count: "text-purple-700",
+    },
+    progress: {
+      bg: "bg-purple-100",
+      indicator: "bg-purple-700",
+    },
+    icon: "/icons/dollar-circle.svg",
+  },
+  Groceries: {
+    bg: "bg-indigo-25",
+    circleBg: "bg-indigo-100",
+    text: {
+      main: "text-indigo-900",
+      count: "text-indigo-700",
+    },
+    progress: {
+      bg: "bg-indigo-100",
+      indicator: "bg-indigo-700",
+    },
+    icon: "/icons/shopping-bag.svg",
+  },
   Travel: {
     bg: "bg-success-25",
     circleBg: "bg-success-100",
@@ -75,6 +140,19 @@ export const topCategoryStyles = {
       indicator: "bg-success-700",
     },
     icon: "/icons/coins.svg",
+  },
+  General: {
+    bg: "bg-blue-25",
+    circleBg: "bg-blue-100",
+    text: {
+      main: "text-blue-900",
+      count: "text-blue-700",
+    },
+    progress: {
+      bg: "bg-blue-100",
+      indicator: "bg-blue-700",
+    },
+    icon: "/icons/transaction.svg",
   },
   default: {
     bg: "bg-pink-25",

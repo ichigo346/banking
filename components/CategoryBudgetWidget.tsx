@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { formatAmount } from "@/lib/utils";
 import { AlertTriangle, Check, Edit2, PieChart, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface CategoryBudgetWidgetProps {
     transactions?: Transaction[];
@@ -161,11 +162,13 @@ const CategoryBudgetWidget = ({ transactions = [] }: CategoryBudgetWidgetProps) 
                             {/* Progress Bar & Percentage */}
                             <div className="flex items-center gap-3">
                                 <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
-                                    <div
-                                        className={`h-full transition-all duration-300 rounded-full ${
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${percentage}%` }}
+                                        transition={{ duration: 0.8, ease: "easeOut" }}
+                                        className={`h-full rounded-full ${
                                             isOver ? "bg-red-500" : isNear ? "bg-amber-500" : "bg-bankGradient"
                                         }`}
-                                        style={{ width: `${percentage}%` }}
                                     />
                                 </div>
                                 <span className={`text-12 font-medium shrink-0 ${isOver ? "text-red-600" : isNear ? "text-amber-600" : "text-gray-600"}`}>

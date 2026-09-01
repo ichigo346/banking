@@ -186,7 +186,7 @@ export const getTransactions = async ({
 
             const data = response.data;
 
-            const newTransactions = data.added.map((transaction) => ({
+            const newTransactions = (data.added || []).map((transaction) => ({
                 id: transaction.transaction_id,
                 name: transaction.name,
                 paymentChannel: transaction.payment_channel,
@@ -194,7 +194,7 @@ export const getTransactions = async ({
                 accountId: transaction.account_id,
                 amount: transaction.amount,
                 pending: transaction.pending,
-                category: transaction.category ? transaction.category[0] : "",
+                category: transaction.category && transaction.category.length > 0 ? transaction.category[0] : "General",
                 date: transaction.date,
                 image: transaction.logo_url,
             }));
@@ -207,7 +207,15 @@ export const getTransactions = async ({
 
         return parseStringify(transactions);
     } catch (error: any) {
-        console.error("An error occurred while getting the transactions:", error?.response?.data || error?.message || error);
+        const errorCode = error?.response?.data?.error_code || error?.code;
+        const errorMessage = error?.response?.data?.error_message || error?.message;
+
+        // In Plaid Sandbox / initial setup, PRODUCT_NOT_READY or un-synced items are transient
+        if (errorCode === "PRODUCT_NOT_READY") {
+            console.log("Plaid transactions are currently initializing (PRODUCT_NOT_READY).");
+        } else {
+            console.log(`Plaid transactions sync notice: ${errorCode ? `[${errorCode}] ` : ''}${errorMessage || 'Transactions not ready or unavailable'}`);
+        }
         return parseStringify([]);
     }
 };

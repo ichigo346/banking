@@ -137,10 +137,10 @@ export function countTransactionCategories(
   let totalCount = 0;
 
   // Iterate over each transaction
-  transactions &&
+  if (transactions && transactions.length > 0) {
     transactions.forEach((transaction) => {
-      // Extract the category from the transaction
-      const category = transaction.category;
+      // Extract and sanitize category from the transaction
+      const category = (transaction.category && transaction.category.trim()) ? transaction.category.trim() : "General";
 
       // If the category exists in the categoryCounts object, increment its count
       if (categoryCounts.hasOwnProperty(category)) {
@@ -153,6 +153,7 @@ export function countTransactionCategories(
       // Increment total count
       totalCount++;
     });
+  }
 
   // Convert the categoryCounts object to an array of objects
   const aggregatedCategories: CategoryCount[] = Object.keys(categoryCounts).map(
