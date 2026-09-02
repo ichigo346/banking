@@ -214,10 +214,6 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
         }
     };
 
-    const selectedSenderAccount = accounts?.find(
-        (acc) => acc.appwriteItemId === form.watch("senderBank") || acc.id === form.watch("senderBank")
-    );
-
     const activeFieldVariants = shouldReduceMotion ? fieldVariantsReduced : fieldVariants;
 
     return (
