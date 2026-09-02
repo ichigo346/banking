@@ -1,65 +1,96 @@
-import React, { useCallback, useEffect, useState, } from 'react'
+'use client';
+
+import React, { useCallback, useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink } from 'react-plaid-link'
 import { useRouter } from 'next/navigation';
 import { createLinkToken, exchangePublicToken } from '@/lib/actions/user.actions';
 import Image from 'next/image';
 
+/**
+ * Inner component that only mounts (and therefore only loads the Plaid SDK
+ * script) once the user has explicitly clicked "Add Bank". Keeping it
+ * separate means usePlaidLink is never called during SSR or before the user
+ * has interacted — eliminating the duplicate-script warning that occurs when
+ * two PlaidLink instances are mounted at the same time (e.g. Sidebar + AuthForm).
+ */
+const PlaidLinkOpener = ({
+    token,
+    onSuccess,
+    variant,
+}: {
+    token: string;
+    onSuccess: PlaidLinkOnSuccess;
+    variant?: string;
+}) => {
+    const config: PlaidLinkOptions = { token, onSuccess };
+    const { open, ready } = usePlaidLink(config);
+
+    // Open immediately once the SDK is ready
+    useEffect(() => {
+        if (ready) open();
+    }, [ready, open]);
+
+    // Render nothing — the button has already been clicked
+    return null;
+};
+
 const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
     const router = useRouter();
-
     const [token, setToken] = useState('');
-
-    useEffect(() => {
-        const getLinkToken = async () => {
-            const data = await createLinkToken(user);
-
-            setToken(data?.linkToken)
-        }
-
-        getLinkToken();
-    }, [user]);
+    const [isOpening, setIsOpening] = useState(false);
 
     const onSuccess = useCallback<PlaidLinkOnSuccess>(async (public_token: string) => {
-        await exchangePublicToken({
-            publicToken: public_token,
-            user,
-        })
-
+        await exchangePublicToken({ publicToken: public_token, user });
         router.push('/');
-    }, [user])
+    }, [user, router]);
 
-    const config: PlaidLinkOptions = {
-        token,
-        onSuccess
-    }
+    const handleClick = async () => {
+        if (isOpening) return;
+        setIsOpening(true);
+        try {
+            // Fetch the link token lazily — only when the user actually clicks
+            const data = await createLinkToken(user);
+            setToken(data?.linkToken ?? '');
+        } catch {
+            setIsOpening(false);
+        }
+    };
 
-    const { open, ready } = usePlaidLink(config);
     return (
         <>
+            {/* Render the opener only after the user clicks AND we have a token */}
+            {isOpening && token && (
+                <PlaidLinkOpener
+                    token={token}
+                    onSuccess={onSuccess}
+                    variant={variant}
+                />
+            )}
+
             {variant === 'primary' ? (
                 <Button
-                    onClick={() => open()}
+                    onClick={handleClick}
                     className="plaidlink-primary"
-                    disabled={!ready}
+                    disabled={isOpening}
                 >
                     Connect bank
                 </Button>
             ) : variant === 'ghost' ? (
-                <Button onClick={() => open()} variant={"ghost"} className="plaidlink-ghost">
+                <Button onClick={handleClick} variant="ghost" className="plaidlink-ghost" disabled={isOpening}>
                     <Image
                         src="/icons/connect-bank.svg"
-                        alt='connect bank'
+                        alt="connect bank"
                         width={24}
                         height={24}
                     />
                     <p className="hidden text-16 font-semibold text-black-2 xl:block">Connect bank</p>
                 </Button>
             ) : (
-                <Button onClick={() => open()} className="plaidlink-default">
+                <Button onClick={handleClick} className="plaidlink-default" disabled={isOpening}>
                     <Image
                         src="/icons/connect-bank.svg"
-                        alt='connect bank'
+                        alt="connect bank"
                         width={24}
                         height={24}
                     />
@@ -67,7 +98,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
                 </Button>
             )}
         </>
-    )
-}
+    );
+};
 
-export default PlaidLink
+export default PlaidLink;

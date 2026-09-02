@@ -49,7 +49,8 @@
 @layer utilities {
 
   .input-class {
-    @apply text-16 rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500;
+    /* 16px prevents iOS auto-zoom; Inter at 16px needs no tracking adjustment */
+    @apply text-16 rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500 placeholder:tracking-normal;
   }
 
   .sheet-content button {
@@ -65,7 +66,8 @@
   }
 
   .header-2 {
-    @apply text-18 font-semibold text-gray-900;
+    /* Section header — 2 steps below h1 (24/30px) at 16px/24px */
+    @apply text-16 font-semibold text-gray-900 tracking-tight;
   }
 
   /* Home */
@@ -143,7 +145,8 @@
   }
 
   .profile-email {
-    @apply text-16 font-normal text-gray-600;
+    /* text-14 with slight tracking for readability at secondary role */
+    @apply text-14 font-normal text-gray-600 tracking-wide;
   }
 
   .banks {
@@ -265,7 +268,12 @@
 
   /* Payment Transfer */
   .payment-transfer {
-    @apply no-scrollbar flex flex-col overflow-y-scroll bg-gray-25 p-8 md:max-h-screen xl:py-12;
+    @apply no-scrollbar flex flex-col overflow-y-scroll bg-gray-25 px-8 pt-8 pb-12 md:max-h-screen xl:pt-12;
+  }
+
+  /* Cap the header box on the transfer page to match the form width */
+  .payment-transfer > .header-box {
+    @apply max-w-[850px];
   }
 
   .payment-transfer_form-item {
@@ -273,15 +281,18 @@
   }
 
   .payment-transfer_form-content {
-    @apply flex w-full max-w-[280px] flex-col gap-2;
+    /* 300px gives a better label-to-field proportion at lg+ widths */
+    @apply flex w-full max-w-[300px] flex-col gap-2;
   }
 
   .payment-transfer_form-details {
-    @apply flex flex-col gap-1 border-t border-gray-200 pb-5 pt-6;
+    /* Match field row rhythm: py-5 top+bottom, matching border-t rows */
+    @apply flex flex-col gap-1 border-t border-gray-200 py-5 max-w-[850px];
   }
 
   .payment-transfer_btn-box {
-    @apply mt-5 flex w-full max-w-[850px] gap-3 border-gray-200 py-5;
+    /* border-t anchors the submit to the form grid; removes floating appearance */
+    @apply mt-2 flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5;
   }
 
   .payment-transfer_btn {
@@ -345,11 +356,52 @@
   }
 }
 
+/* ── Motion: input focus pulse ─────────────────────────────────────────── */
+@keyframes focus-pulse-ring {
+  0%   { box-shadow: 0 0 0 0px rgba(1, 121, 254, 0.35); }
+  60%  { box-shadow: 0 0 0 4px rgba(1, 121, 254, 0.12); }
+  100% { box-shadow: 0 0 0 3px rgba(1, 121, 254, 0.08); }
+}
+
+.focus-pulse:focus {
+  outline: none;
+  border-color: #0179FE;
+  animation: focus-pulse-ring 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Motion: gradient button shimmer sweep ─────────────────────────────── */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-110%) skewX(-12deg); }
+  100% { transform: translateX(210%) skewX(-12deg); }
+}
+
+.btn-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  animation: shimmer-sweep 2.4s ease-in-out infinite;
+  border-radius: inherit;
+}
+
+/* ── Reduced motion overrides ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Keep meaningful state feedback, just no spatial movement */
+  .focus-pulse:focus {
+    animation: none;
+    box-shadow: 0 0 0 3px rgba(1, 121, 254, 0.2);
+  }
+
+  .btn-shimmer {
+    animation: none;
   }
 }

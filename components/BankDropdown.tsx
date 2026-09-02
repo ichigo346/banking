@@ -41,37 +41,49 @@ export const BankDropdown = ({
 
     return (
         <Select
-            defaultValue={selected.id}
+            defaultValue={selected?.appwriteItemId || selected?.id}
             onValueChange={(value) => handleBankChange(value)}
         >
             <SelectTrigger
-                className={`flex w-full bg-white gap-3 md:w-[300px] ${otherStyles}`}
+                className={`flex w-full bg-white gap-3 md:w-[320px] border-gray-300 focus:border-bankGradient focus:ring-1 focus:ring-bankGradient/20 transition-all ${otherStyles}`}
             >
-                <Image
-                    src="icons/credit-card.svg"
-                    width={20}
-                    height={20}
-                    alt="account"
-                />
-                <p className="line-clamp-1 w-full text-left">{selected.name}</p>
+                <div className="flex size-7 items-center justify-center rounded-md bg-blue-25 text-bankGradient">
+                    <Image
+                        src="/icons/credit-card.svg"
+                        width={18}
+                        height={18}
+                        alt="account"
+                    />
+                </div>
+                <div className="flex flex-1 items-center justify-between overflow-hidden pr-2">
+                    <p className="line-clamp-1 text-left text-14 font-medium text-gray-800">{selected?.name}</p>
+                    {selected?.currentBalance !== undefined && (
+                        <span className="text-12 font-semibold text-bankGradient shrink-0">
+                            {formatAmount(selected.currentBalance)}
+                        </span>
+                    )}
+                </div>
             </SelectTrigger>
             <SelectContent
-                className={`w-full bg-white md:w-[300px] ${otherStyles}`}
-                align="end"
+                className={`w-full bg-white md:w-[320px] shadow-lg border-gray-200 rounded-xl ${otherStyles}`}
+                align="start"
             >
                 <SelectGroup>
-                    <SelectLabel className="py-2 font-normal text-gray-500">
-                        Select a bank to display
+                    <SelectLabel className="py-2 px-3 text-12 font-medium text-gray-500 uppercase tracking-wider">
+                        Select a bank account
                     </SelectLabel>
                     {accounts.map((account: Account) => (
                         <SelectItem
                             key={account.id}
                             value={account.appwriteItemId}
-                            className="cursor-pointer border-t"
+                            className="cursor-pointer border-t border-gray-100 hover:bg-blue-25/60 focus:bg-blue-25 transition-colors py-2.5 px-3"
                         >
-                            <div className="flex flex-col ">
-                                <p className="text-16 font-medium">{account.name}</p>
-                                <p className="text-14 font-medium text-blue-600">
+                            <div className="flex flex-1 items-center justify-between w-full gap-3">
+                                <div>
+                                    <p className="text-14 font-medium text-gray-900">{account.name}</p>
+                                    <p className="text-12 text-gray-500">{account.officialName || account.mask ? `•••• ${account.mask}` : 'Checking'}</p>
+                                </div>
+                                <p className="text-14 font-semibold text-bankGradient">
                                     {formatAmount(account.currentBalance)}
                                 </p>
                             </div>
