@@ -210,9 +210,10 @@ export const getTransactions = async ({
         const errorCode = error?.response?.data?.error_code || error?.code;
         const errorMessage = error?.response?.data?.error_message || error?.message;
 
-        // In Plaid Sandbox / initial setup, PRODUCT_NOT_READY or un-synced items are transient
-        if (errorCode === "PRODUCT_NOT_READY") {
-            console.log("Plaid transactions are currently initializing (PRODUCT_NOT_READY).");
+        // In Plaid Sandbox / initial setup, PRODUCT_NOT_READY or ADDITIONAL_CONSENT_REQUIRED are normal for new test accounts
+        if (errorCode === "PRODUCT_NOT_READY" || errorCode === "ADDITIONAL_CONSENT_REQUIRED") {
+            // Gracefully handle without dumping notice on every render
+            return parseStringify([]);
         } else {
             console.log(`Plaid transactions sync notice: ${errorCode ? `[${errorCode}] ` : ''}${errorMessage || 'Transactions not ready or unavailable'}`);
         }

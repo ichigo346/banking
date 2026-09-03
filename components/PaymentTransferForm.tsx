@@ -3,10 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, CheckCircle2, HelpCircle, Info, Loader2, ShieldCheck, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 
 import { createTransfer } from "@/lib/actions/dwolla.actions";
 import { createTransaction } from "@/lib/actions/transaction.actions";
@@ -31,7 +31,10 @@ const formSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
     name: z.string().max(100, "Transfer note must be under 100 characters").optional(),
     amount: z.string().refine(
-        (val) => !isNaN(Number(val)) && Number(val) > 0,
+        (val) => {
+            const cleaned = val.replace(/[$,]/g, "").trim();
+            return !isNaN(Number(cleaned)) && Number(cleaned) > 0;
+        },
         { message: "Amount must be a positive number (e.g. 25.00)" }
     ),
     senderBank: z.string().min(1, "Please select a valid source bank account"),
@@ -52,8 +55,7 @@ const FieldHint = ({ text }: { text: string }) => (
 
 // ─── Motion variants ────────────────────────────────────────────────────────
 
-/** Staggered field cascade — fields slide in from below, one after another */
-const containerVariants = {
+const containerVariants: Variants = {
     hidden: {},
     visible: {
         transition: {
@@ -63,7 +65,7 @@ const containerVariants = {
     },
 };
 
-const fieldVariants = {
+const fieldVariants: Variants = {
     hidden: { opacity: 0, y: 14 },
     visible: {
         opacity: 1,
@@ -72,8 +74,7 @@ const fieldVariants = {
     },
 };
 
-/** Reduced-motion variant — only opacity, no spatial movement */
-const fieldVariantsReduced = {
+const fieldVariantsReduced: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
@@ -81,8 +82,7 @@ const fieldVariantsReduced = {
     },
 };
 
-/** Error banner shake — communicates rejection without a full re-render */
-const errorShakeVariants = {
+const errorShakeVariants: Variants = {
     hidden: { opacity: 0, x: 0 },
     visible: {
         opacity: 1,
@@ -92,8 +92,13 @@ const errorShakeVariants = {
     exit: { opacity: 0, transition: { duration: 0.15 } },
 };
 
-/** Step progress pip — gradient fill sweeps left-to-right */
-const pipFillVariants = {
+const errorShakeVariantsReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.2 } },
+    exit: { opacity: 0, transition: { duration: 0.15 } },
+};
+
+const pipFillVariants: Variants = {
     unfilled: { scaleX: 0, originX: 0 },
     filled: {
         scaleX: 1,
@@ -111,7 +116,9 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [pendingData, setPendingData] = useState<FormValues | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [errorKey, setErrorKey] = useState(0); // key-bump forces the shake to re-trigger
+    const [errorKey, setErrorKey] = useState(0);
+
+    const defaultBankId = accounts?.[0]?.appwriteItemId || accounts?.[0]?.id || "";
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -119,13 +126,14 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
             name: "",
             email: "",
             amount: "",
-            senderBank: accounts?.[0]?.appwriteItemId || "",
+            senderBank: defaultBankId,
             sharableId: "",
         },
     });
 
+    const watchedSenderBank = form.watch("senderBank");
     const selectedSenderAccount = accounts?.find(
-        (acc) => acc.appwriteItemId === form.watch("senderBank") || acc.id === form.watch("senderBank")
+        (acc) => acc.appwriteItemId === watchedSenderBank || acc.id === watchedSenderBank
     );
 
     // Escape key listener to close modal safely
@@ -147,7 +155,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
             ...data,
             email: data.email.trim(),
             sharableId: data.sharableId.trim(),
-            name: data.name?.trim(),
+            name: data.name?.trim() || "",
             amount: data.amount.replace(/[$,]/g, "").trim(),
         };
 
@@ -207,7 +215,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
         } catch (error: any) {
             console.error("Submitting create transfer request failed: ", error);
             setErrorMessage(error?.message || "An unexpected error occurred while processing the transfer.");
-            setErrorKey((k) => k + 1); // re-trigger shake on each new error
+            setErrorKey((k) => k + 1);
             setShowConfirmation(false);
         } finally {
             setIsLoading(false);
@@ -215,6 +223,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
     };
 
     const activeFieldVariants = shouldReduceMotion ? fieldVariantsReduced : fieldVariants;
+    const activeErrorVariants = shouldReduceMotion ? errorShakeVariantsReduced : errorShakeVariants;
 
     return (
         <>
@@ -277,7 +286,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
                         <FormField
                             control={form.control}
                             name="senderBank"
-                            render={() => (
+                            render={({ field }) => (
                                 <FormItem className="border-t border-gray-200">
                                     <div className="payment-transfer_form-item py-5">
                                         <div className="payment-transfer_form-content">
@@ -490,7 +499,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
                             <motion.div
                                 key={errorKey}
                                 className="mt-4 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700"
-                                variants={shouldReduceMotion ? undefined : errorShakeVariants}
+                                variants={activeErrorVariants}
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
@@ -528,7 +537,6 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
                                 disabled={isLoading}
                                 className="payment-transfer_btn relative overflow-hidden"
                             >
-                                {/* Shimmer sweep on idle — the one authored brand moment */}
                                 {!isLoading && (
                                     <span className="btn-shimmer pointer-events-none absolute inset-0" aria-hidden="true" />
                                 )}
@@ -620,7 +628,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
                                         <motion.div
                                             key={label}
                                             className="flex justify-between text-14"
-                                            variants={shouldReduceMotion ? fieldVariantsReduced : fieldVariants}
+                                            variants={activeFieldVariants}
                                         >
                                             <span className="text-gray-500">{label}:</span>
                                             <span className={valueClass}>{value}</span>
@@ -629,7 +637,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
 
                                     <motion.div
                                         className="flex justify-between border-t border-gray-200 pt-3 text-16 font-semibold"
-                                        variants={shouldReduceMotion ? fieldVariantsReduced : fieldVariants}
+                                        variants={activeFieldVariants}
                                     >
                                         <span className="text-gray-700">Total Amount:</span>
                                         <span className="text-bankGradient font-ibm-plex-serif">
@@ -640,7 +648,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
 
                                 <motion.p
                                     className="text-12 text-gray-500"
-                                    variants={shouldReduceMotion ? fieldVariantsReduced : fieldVariants}
+                                    variants={activeFieldVariants}
                                 >
                                     By confirming, you authorize Horizon to debit your source account for the amount specified. ACH transfers cannot be instantly canceled once submitted.
                                 </motion.p>

@@ -124,7 +124,7 @@ export async function getLoggedInUser() {
 
         return parseStringify(user);
     } catch (error) {
-        console.log(error)
+        // Expected when user is signed out or session cookie is not set
         return null;
     }
 }

@@ -17,13 +17,22 @@ import Image from 'next/image';
 const PlaidLinkOpener = ({
     token,
     onSuccess,
-    variant,
+    onClose,
 }: {
     token: string;
     onSuccess: PlaidLinkOnSuccess;
-    variant?: string;
+    onClose: () => void;
 }) => {
-    const config: PlaidLinkOptions = { token, onSuccess };
+    const config: PlaidLinkOptions = {
+        token,
+        onSuccess: (public_token: string, metadata) => {
+            onSuccess(public_token, metadata);
+            onClose();
+        },
+        onExit: () => {
+            onClose();
+        },
+    };
     const { open, ready } = usePlaidLink(config);
 
     // Open immediately once the SDK is ready
@@ -45,13 +54,22 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
         router.push('/');
     }, [user, router]);
 
+    const handleClose = useCallback(() => {
+        setIsOpening(false);
+        setToken('');
+    }, []);
+
     const handleClick = async () => {
         if (isOpening) return;
         setIsOpening(true);
         try {
             // Fetch the link token lazily — only when the user actually clicks
             const data = await createLinkToken(user);
-            setToken(data?.linkToken ?? '');
+            if (data?.linkToken) {
+                setToken(data.linkToken);
+            } else {
+                setIsOpening(false);
+            }
         } catch {
             setIsOpening(false);
         }
@@ -64,7 +82,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
                 <PlaidLinkOpener
                     token={token}
                     onSuccess={onSuccess}
-                    variant={variant}
+                    onClose={handleClose}
                 />
             )}
 
