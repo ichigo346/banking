@@ -50,6 +50,45 @@ export const ITEMS = [
 ];
 
 export const topCategoryStyles = {
+  Subscriptions: {
+    bg: "bg-[#F5FAFF] border border-[#E0F2FE]",
+    circleBg: "bg-blue-100",
+    text: {
+      main: "text-gray-900 font-semibold",
+      count: "text-[#0179FE] font-semibold",
+    },
+    progress: {
+      bg: "bg-blue-100",
+      indicator: "bg-[#0179FE]",
+    },
+    icon: "/icons/monitor.svg",
+  },
+  "Food and booze": {
+    bg: "bg-[#FEF6FB] border border-[#FCE7F6]",
+    circleBg: "bg-pink-100",
+    text: {
+      main: "text-gray-900 font-semibold",
+      count: "text-[#DD2590] font-semibold",
+    },
+    progress: {
+      bg: "bg-pink-100",
+      indicator: "bg-[#DD2590]",
+    },
+    icon: "/icons/shopping-bag.svg",
+  },
+  Savings: {
+    bg: "bg-[#F6FEF9] border border-[#D1FADF]",
+    circleBg: "bg-emerald-100",
+    text: {
+      main: "text-gray-900 font-semibold",
+      count: "text-[#039855] font-semibold",
+    },
+    progress: {
+      bg: "bg-emerald-100",
+      indicator: "bg-[#039855]",
+    },
+    icon: "/icons/coins.svg",
+  },
   "Food and Drink": {
     bg: "bg-blue-25",
     circleBg: "bg-blue-100",
@@ -75,19 +114,6 @@ export const topCategoryStyles = {
       indicator: "bg-pink-700",
     },
     icon: "/icons/shopping-bag.svg",
-  },
-  Subscriptions: {
-    bg: "bg-blue-25",
-    circleBg: "bg-blue-100",
-    text: {
-      main: "text-blue-900",
-      count: "text-blue-700",
-    },
-    progress: {
-      bg: "bg-blue-100",
-      indicator: "bg-blue-700",
-    },
-    icon: "/icons/monitor.svg",
   },
   Transfer: {
     bg: "bg-amber-25",

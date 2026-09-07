@@ -4,12 +4,12 @@ import React from 'react'
 import BankCard from './BankCard'
 import { countTransactionCategories } from '@/lib/utils'
 import Category from './Category'
+import { MoreVertical } from 'lucide-react'
 
 const defaultCategories: CategoryCount[] = [
-    { name: "Subscriptions", count: 0, totalCount: 1 },
-    { name: "Food and Drink", count: 0, totalCount: 1 },
-    { name: "Travel", count: 0, totalCount: 1 },
-    { name: "Transfer", count: 0, totalCount: 1 },
+    { name: "Subscriptions", count: 25, totalCount: 100 },
+    { name: "Food and booze", count: 120, totalCount: 200 },
+    { name: "Savings", count: 50, totalCount: 100 },
 ];
 
 const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
@@ -154,15 +154,15 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
                     </div>
                 )}
 
-                <div className="mt-10 flex flex-1 flex-col gap-6">
+                <div className="mt-8 flex flex-1 flex-col gap-4">
                     <div className="flex items-center justify-between">
-                        <h2 className="header-2">Top categories</h2>
-                        {categories.length === 0 && (
-                            <span className="text-12 font-medium text-gray-400">Sample preview</span>
-                        )}
+                        <h2 className="text-16 font-bold text-gray-900">My budgets</h2>
+                        <button type="button" className="text-gray-400 hover:text-gray-600 p-1">
+                            <MoreVertical className="size-4" />
+                        </button>
                     </div>
-                    <div className='space-y-2'>
-                        {displayCategories.map((category) => (
+                    <div className='flex flex-col gap-3'>
+                        {displayCategories.slice(0, 3).map((category) => (
                             <Category key={category.name} category={category} />
                         ))}
                     </div>

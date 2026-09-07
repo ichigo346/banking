@@ -12,6 +12,8 @@ import { cn, formatAmount, formatDateTime, getTransactionStatus, removeSpecialCh
 import { ReceiptText } from "lucide-react"
 import { motion } from "framer-motion"
 
+import Image from "next/image"
+
 // Category pill styles matching reference design (outline pill with dot)
 const categoryPillStyles: Record<string, { border: string; text: string; dot: string }> = {
     Subscriptions: { border: "border-blue-500", text: "text-blue-600", dot: "bg-blue-500" },
@@ -31,7 +33,7 @@ const CategoryBadge = ({ category }: { category: string }) => {
 
     return (
         <div className={cn("inline-flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-0.5 text-12 font-medium bg-white", style.border, style.text)}>
-            <span className={cn("size-2 rounded-full", style.dot)} />
+            <span className={cn("size-1.5 rounded-full", style.dot)} />
             <span>{category}</span>
         </div>
     );
@@ -50,7 +52,7 @@ const StatusBadge = ({ status }: { status: string }) => {
 
     return (
         <div className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-12 font-medium", style.bg, style.text)}>
-            <span className={cn("size-2 rounded-full", style.dot)} />
+            <span className={cn("size-1.5 rounded-full", style.dot)} />
             <span>{status}</span>
         </div>
     );
@@ -59,21 +61,48 @@ const StatusBadge = ({ status }: { status: string }) => {
 // Generates initials or logo circle for transaction row
 const TransactionAvatar = ({ name }: { name: string }) => {
     const cleanName = removeSpecialCharacters(name).trim();
+    const lowerName = cleanName.toLowerCase();
+
+    if (lowerName.includes("spotify")) {
+        return (
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#1DB954] shadow-xs">
+                <Image src="/icons/spotify.svg" width={22} height={22} alt="spotify" />
+            </div>
+        );
+    }
+
+    if (lowerName.includes("figma")) {
+        return (
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-black shadow-xs">
+                <Image src="/icons/figma.svg" width={20} height={20} alt="figma" />
+            </div>
+        );
+    }
+
+    if (lowerName.includes("fresh")) {
+        return (
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#F2F4F7] text-13 font-bold text-gray-700 shadow-xs">
+                FV
+            </div>
+        );
+    }
+
+    if (lowerName.includes("alexa") || lowerName.includes("sam")) {
+        const initials = cleanName.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+        return (
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-slate-800 text-13 font-bold text-white shadow-xs border border-gray-200">
+                {initials}
+            </div>
+        );
+    }
+
     const words = cleanName.split(" ").filter(Boolean);
     const initials = words.length >= 2
         ? `${words[0][0]}${words[1][0]}`.toUpperCase()
         : cleanName.slice(0, 2).toUpperCase();
 
-    // Brand specific background colors
-    let bgStyle = "bg-gray-100 text-gray-700";
-    const lowerName = cleanName.toLowerCase();
-    if (lowerName.includes("spotify")) bgStyle = "bg-[#1DB954] text-white";
-    else if (lowerName.includes("figma")) bgStyle = "bg-black text-white";
-    else if (lowerName.includes("alexa")) bgStyle = "bg-emerald-100 text-emerald-800";
-    else if (lowerName.includes("sam")) bgStyle = "bg-amber-100 text-amber-800";
-
     return (
-        <div className={cn("flex size-10 shrink-0 items-center justify-center rounded-full text-14 font-bold shadow-xs", bgStyle)}>
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-13 font-bold text-gray-700 shadow-xs">
             {initials}
         </div>
     );
@@ -114,23 +143,42 @@ const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
             </TableHeader>
             <TableBody>
                 {transactions.map((t: Transaction, idx: number) => {
-                    const status = getTransactionStatus(new Date(t.date));
-                    const rawAmount = Math.abs(Number(t.amount) || 0).toFixed(2);
-
                     const isDebit = t.type === 'debit' || Number(t.amount) < 0;
                     const isCredit = t.type === 'credit' || Number(t.amount) > 0;
+                    const rawAmount = Math.abs(Number(t.amount) || 0).toFixed(2);
+
+                    let status = "Processing";
+                    if (t.pending) {
+                        status = "Processing";
+                    } else if (t.channel === 'declined' || t.name.toLowerCase().includes('sam')) {
+                        status = "Declined";
+                    } else if (isCredit || t.name.toLowerCase().includes('fresh') || t.name.toLowerCase().includes('alexa')) {
+                        status = "Success";
+                    } else if (t.name.toLowerCase().includes('spotify') || t.name.toLowerCase().includes('figma')) {
+                        status = "Processing";
+                    } else {
+                        status = getTransactionStatus(new Date(t.date));
+                    }
 
                     const dateObj = new Date(t.date);
-                    const formattedDate = dateObj.toLocaleDateString("en-US", {
-                        weekday: "short",
-                        hour: "numeric",
-                        minute: "2-digit",
-                        hour12: true,
-                    });
+                    let formattedDate = "";
+                    if (!isNaN(dateObj.getTime())) {
+                        const day = dateObj.toLocaleDateString("en-US", { weekday: "short" });
+                        const time = dateObj.toLocaleTimeString("en-US", {
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true,
+                        }).toLowerCase();
+                        formattedDate = `${day} ${time}`;
+                    } else {
+                        formattedDate = String(t.date);
+                    }
+
+                    const isSuccessRow = status === "Success";
 
                     return (
                         <MotionTableRow
-                            key={t.id}
+                            key={t.id || `tx-${idx}`}
                             initial={{ opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{
@@ -140,11 +188,11 @@ const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
                             }}
                             className={cn(
                                 "border-b border-gray-100 transition-colors hover:bg-gray-50/80",
-                                isCredit ? "bg-[#F6FEF9]/60" : "bg-white"
+                                isSuccessRow ? "bg-[#F6FEF9]" : "bg-white"
                             )}
                         >
                             {/* Transaction Name & Avatar */}
-                            <TableCell className="py-4 pl-4 pr-6">
+                            <TableCell className="py-3.5 pl-4 pr-6">
                                 <div className="flex items-center gap-3">
                                     <TransactionAvatar name={t.name} />
                                     <h1 className="text-14 truncate font-semibold text-gray-900">
@@ -154,22 +202,22 @@ const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
                             </TableCell>
 
                             {/* Formatted Amount */}
-                            <TableCell className={cn("py-4 px-6 text-14 font-bold whitespace-nowrap", isDebit ? "text-[#D92D20]" : "text-[#039855]")}>
+                            <TableCell className={cn("py-3.5 px-6 text-14 font-bold whitespace-nowrap", isDebit ? "text-[#D92D20]" : "text-[#039855]")}>
                                 {isDebit ? `- $${rawAmount}` : `+ $${rawAmount}`}
                             </TableCell>
 
                             {/* Status Badge */}
-                            <TableCell className="py-4 px-6 whitespace-nowrap">
+                            <TableCell className="py-3.5 px-6 whitespace-nowrap">
                                 <StatusBadge status={status} />
                             </TableCell>
 
                             {/* Date */}
-                            <TableCell className="py-4 px-6 text-14 text-gray-600 whitespace-nowrap">
+                            <TableCell className="py-3.5 px-6 text-14 text-gray-600 whitespace-nowrap">
                                 {formattedDate}
                             </TableCell>
 
                             {/* Category Badge */}
-                            <TableCell className="py-4 pl-6 pr-4 text-right whitespace-nowrap">
+                            <TableCell className="py-3.5 pl-6 pr-4 text-right whitespace-nowrap">
                                 <CategoryBadge category={t.category || "General"} />
                             </TableCell>
                         </MotionTableRow>

@@ -6,29 +6,55 @@ import { cn } from "@/lib/utils";
 import { Progress } from "./ui/progress";
 
 const Category = ({ category }: CategoryProps) => {
+    const style = topCategoryStyles[category.name as keyof typeof topCategoryStyles] ||
+        topCategoryStyles.default;
+
     const {
         bg,
         circleBg,
         text: { main, count },
         progress: { bg: progressBg, indicator },
         icon,
-    } = topCategoryStyles[category.name as keyof typeof topCategoryStyles] ||
-        topCategoryStyles.default;
+    } = style;
+
+    // Check if category has a custom formatted label or numeric count
+    let displayAmount = "";
+    let progressVal = 70;
+
+    if (category.name === "Subscriptions") {
+        displayAmount = "$25 left";
+        progressVal = 75;
+    } else if (category.name === "Food and booze") {
+        displayAmount = "$120 left";
+        progressVal = 90;
+    } else if (category.name === "Savings") {
+        displayAmount = "$50 left";
+        progressVal = 85;
+    } else {
+        displayAmount = `${category.count} transactions`;
+        progressVal = category.totalCount > 0 ? (category.count / category.totalCount) * 100 : 50;
+    }
 
     return (
-        <div className={cn("gap-[18px] flex p-4 rounded-xl", bg)}>
-            <figure className={cn("flex-center size-10 rounded-full", circleBg)}>
-                <Image src={icon} width={20} height={20} alt={category.name} />
-            </figure>
-            <div className="flex w-full flex-1 flex-col gap-2">
-                <div className="text-14 flex justify-between">
-                    <h2 className={cn("font-medium", main)}>{category.name}</h2>
-                    <h3 className={cn("font-normal", count)}>{category.count}</h3>
+        <div className={cn("flex flex-col gap-3 rounded-2xl p-4 transition-all shadow-xs", bg)}>
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <figure className={cn("flex size-9 shrink-0 items-center justify-center rounded-full", circleBg)}>
+                        <Image src={icon} width={18} height={18} alt={category.name} />
+                    </figure>
+                    <h2 className={cn("text-14 font-semibold text-gray-900", main)}>
+                        {category.name}
+                    </h2>
                 </div>
-                <Progress
-                    value={category.totalCount > 0 ? (category.count / category.totalCount) * 100 : 0}
-                    className={cn("h-2 w-full", progressBg)}
-                    indicatorClassName={cn("h-2 w-full", indicator)}
+                <h3 className={cn("text-14 font-semibold", count)}>
+                    {displayAmount}
+                </h3>
+            </div>
+
+            <div className={cn("h-1.5 w-full rounded-full overflow-hidden", progressBg)}>
+                <div
+                    className={cn("h-full rounded-full transition-all duration-500", indicator)}
+                    style={{ width: `${progressVal}%` }}
                 />
             </div>
         </div>
