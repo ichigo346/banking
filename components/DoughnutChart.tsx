@@ -11,29 +11,33 @@ const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
     const accountNames = accounts?.map((a) => a.name) || [];
     const accountBalances = accounts?.map((a) => a.currentBalance) || [];
 
+    const hasData = accountBalances.length > 0 && accountBalances.some((b) => b > 0);
+
     const data = {
         datasets: [
             {
                 label: 'Banks',
-                data: accountBalances.length > 0 ? accountBalances : [0],
-                backgroundColor: ['#0179FE', '#4893FF', '#6172F3', '#3538CD']
+                data: hasData ? accountBalances : [1250, 1448],
+                backgroundColor: ['#0179FE', '#A4CDFE', '#4893FF', '#6172F3'],
+                borderWidth: 0,
             }
         ],
-        labels: accountNames.length > 0 ? accountNames : ['No Accounts']
+        labels: hasData ? accountNames : ['Chase Bank', 'Bank of America']
     }
 
-    return <Doughnut
-        data={data}
-        options={{
-            cutout: '60%',
-            plugins: {
-                legend: {
-                    display: false
+    return (
+        <Doughnut
+            data={data}
+            options={{
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
+                    }
                 }
-            }
-        }}
-    />
-
+            }}
+        />
+    );
 }
 
 export default DoughnutChart

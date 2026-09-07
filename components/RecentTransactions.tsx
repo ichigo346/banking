@@ -22,19 +22,23 @@ const RecentTransactions = ({
 
     return (
         <section className="recent-transactions">
-            <header className="flex items-center justify-between ">
-                <h2 className='recent-transactions-title'>
-                    Recent Transactions
+            <header className="flex items-center justify-between">
+                <h2 className="text-20 md:text-24 font-bold text-gray-900">
+                    Recent transactions
                 </h2>
-                <Link href={`/transaction-history/?id=${appwriteItemId}`} className="view-all-btn">
+                <Link href={`/transaction-history/?id=${appwriteItemId}`} className="text-14 rounded-lg border border-gray-300 px-4 py-2 font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
                     View all
                 </Link>
             </header>
 
-            <Tabs defaultValue={appwriteItemId} className="w-full">
-                <TabsList className="reccent-transanctions-tablist">
+            <Tabs defaultValue={appwriteItemId || accounts?.[0]?.appwriteItemId} className="w-full">
+                <TabsList className="flex w-full justify-start gap-2 border-b border-gray-200 bg-transparent p-0 rounded-none">
                     {accounts.map((account: Account) => (
-                        <TabsTrigger key={account.id} value={account.appwriteItemId}>
+                        <TabsTrigger
+                            key={account.id}
+                            value={account.appwriteItemId}
+                            className="p-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+                        >
                             <BankTabItem
                                 key={account.id}
                                 account={account}

@@ -21,17 +21,14 @@ export const BankTabItem = ({ account, appwriteItemId }: BankTabItemProps) => {
     return (
         <div
             onClick={handleBankChange}
-            className={cn(`banktab-item`, {
-                " border-blue-600": isActive,
-            })}
+            className={cn(
+                "cursor-pointer border-b-2 px-4 py-2.5 transition-all text-16 font-semibold whitespace-nowrap",
+                isActive
+                    ? "border-[#0179FE] text-[#0179FE]"
+                    : "border-transparent text-gray-500 hover:text-gray-700"
+            )}
         >
-            <p
-                className={cn(`text-16 line-clamp-1 flex-1 font-medium text-gray-500`, {
-                    " text-blue-600": isActive,
-                })}
-            >
-                {account.name}
-            </p>
+            <p>{account.name}</p>
         </div>
     );
 };

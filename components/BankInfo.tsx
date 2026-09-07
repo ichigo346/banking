@@ -10,6 +10,15 @@ import {
     getAccountTypeColors,
 } from "@/lib/utils";
 
+const getBankInitials = (name?: string) => {
+    if (!name) return 'CB';
+    const words = name.trim().split(/\s+/);
+    if (words.length >= 2) {
+        return `${words[0][0]}${words[1][0]}`.toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+};
+
 const BankInfo = ({ account, appwriteItemId, type }: BankInfoProps) => {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -25,48 +34,38 @@ const BankInfo = ({ account, appwriteItemId, type }: BankInfoProps) => {
         router.push(newUrl, { scroll: false });
     };
 
-    const colors = getAccountTypeColors(account?.type as AccountTypes);
+    const initials = getBankInitials(account?.name);
 
     return (
         <div
             onClick={handleBankChange}
-            className={cn(`bank-info ${colors.bg}`, {
-                "shadow-sm border-blue-700": type === "card" && isActive,
-                "rounded-xl": type === "card",
-                "hover:shadow-sm cursor-pointer": type === "card",
-            })}
+            className={cn(
+                "flex items-center justify-between gap-4 rounded-xl bg-[#F5FAFF] p-5 transition-all",
+                {
+                    "shadow-sm border border-blue-700 cursor-pointer": type === "card" && isActive,
+                    "hover:shadow-xs cursor-pointer": type === "card",
+                }
+            )}
         >
-            <figure
-                className={`flex-center h-fit rounded-full bg-blue-100 ${colors.lightBg}`}
-            >
-                <Image
-                    src="/icons/connect-bank.svg"
-                    width={20}
-                    height={20}
-                    alt={account.subtype}
-                    className="m-2 min-w-5"
-                />
-            </figure>
-            <div className="flex w-full flex-1 flex-col justify-center gap-1">
-                <div className="bank-info_content">
-                    <h2
-                        className={`text-16 line-clamp-1 flex-1 font-bold text-blue-900 ${colors.title}`}
-                    >
-                        {account.name}
-                    </h2>
-                    {type === "full" && (
-                        <p
-                            className={`text-12 rounded-full px-3 py-1 font-medium text-blue-700 ${colors.subText} ${colors.lightBg}`}
-                        >
-                            {account.subtype}
-                        </p>
-                    )}
+            <div className="flex items-center gap-4">
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#0179FE] text-16 font-bold text-white shadow-xs">
+                    {initials}
                 </div>
-
-                <p className={`text-16 font-medium text-blue-700 ${colors.subText}`}>
-                    {formatAmount(account.currentBalance)}
-                </p>
+                <div className="flex flex-col gap-0.5">
+                    <h2 className="text-16 font-bold text-gray-900">
+                        {account?.name || 'Chase Bank'}
+                    </h2>
+                    <p className="text-16 font-bold text-[#0179FE]">
+                        {formatAmount(account?.currentBalance ?? 2588.12)}
+                    </p>
+                </div>
             </div>
+
+            {account?.subtype && (
+                <span className="rounded-full bg-[#ECFDF3] px-3.5 py-1 text-12 font-medium text-[#027A48] capitalize">
+                    {account.subtype}
+                </span>
+            )}
         </div>
     );
 };

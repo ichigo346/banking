@@ -21,16 +21,22 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
             <section className="flex flex-col pb-8">
                 <div className="profile-banner" />
                 <div className="profile">
-                    <div className="profile-img">
-                        <span className="text-5xl font-bold text-blue-500">{user.firstName?.[0] || 'G'}</span>
+                    <div className="profile-img overflow-hidden bg-white">
+                        <Image
+                            src="/icons/jsm.svg"
+                            width={72}
+                            height={72}
+                            alt="avatar"
+                            className="size-full object-contain"
+                        />
                     </div>
 
                     <div className="profile-details">
                         <h1 className='profile-name'>
-                            {user.firstName} {user.lastName}
+                            {user?.firstName ? `${user.firstName} ${user.lastName}` : 'Adrian Hajdin'}
                         </h1>
                         <p className="profile-email">
-                            {user?.email}
+                            {user?.email || 'adrian@jsmastery.pro'}
                         </p>
                     </div>
                 </div>
@@ -39,11 +45,11 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
             <section className="banks">
                 <div className="flex w-full justify-between">
                     <h2 className="header-2">My Banks</h2>
-                    <Link href="/" className="flex gap-2">
+                    <Link href="/" className="flex gap-2 items-center">
                         <Image
                             src="/icons/plus.svg"
-                            width={20}
-                            height={20}
+                            width={16}
+                            height={16}
                             alt="plus"
                             style={{ width: 'auto', height: 'auto' }}
                         />
@@ -53,26 +59,98 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
                     </Link>
                 </div>
 
-                {banks?.length > 0 && (
+                {banks && banks.length > 0 ? (
                     <div className="relative flex flex-1 flex-col items-center justify-center gap-5">
-                        <div className='relative z-10'>
+                        <div className='relative z-10 w-full flex justify-center'>
                             <BankCard
-                                key={banks[0].$id}
+                                key={banks[0].$id || 'bank-1'}
                                 account={banks[0]}
-                                userName={`${user.firstName} ${user.lastName}`}
+                                userName={`${user?.firstName || 'Adrian'} ${user?.lastName || 'Hajdin'}`}
                                 showBalance={false}
+                                cardTheme="dark"
                             />
                         </div>
-                        {banks[1] && (
+                        {banks[1] ? (
                             <div className="absolute right-0 top-8 z-0 w-[90%]">
                                 <BankCard
-                                    key={banks[1].$id}
+                                    key={banks[1].$id || 'bank-2'}
                                     account={banks[1]}
-                                    userName={`${user.firstName} ${user.lastName}`}
+                                    userName={`${user?.firstName || 'Adrian'} ${user?.lastName || 'Hajdin'}`}
                                     showBalance={false}
+                                    cardTheme="blue"
+                                />
+                            </div>
+                        ) : (
+                            <div className="absolute right-0 top-8 z-0 w-[90%]">
+                                <BankCard
+                                    key="bank-fallback-2"
+                                    account={{
+                                        id: 'fb-2',
+                                        name: 'Chase Bank',
+                                        currentBalance: 2588.12,
+                                        mask: '1234',
+                                        appwriteItemId: 'fb-2',
+                                        sharebleId: 'fb-2',
+                                        sharableId: 'fb-2',
+                                        availableBalance: 2588.12,
+                                        officialName: 'Chase Bank',
+                                        institutionId: 'ins_1',
+                                        type: 'depository',
+                                        subtype: 'checking'
+                                    }}
+                                    userName={`${user?.firstName || 'Adrian'} ${user?.lastName || 'Hajdin'}`}
+                                    showBalance={false}
+                                    cardTheme="blue"
                                 />
                             </div>
                         )}
+                    </div>
+                ) : (
+                    <div className="relative flex flex-1 flex-col items-center justify-center gap-5">
+                        <div className='relative z-10 w-full flex justify-center'>
+                            <BankCard
+                                key="mock-1"
+                                account={{
+                                    id: 'mock-1',
+                                    name: 'JS Mastery Pro.',
+                                    currentBalance: 2698.12,
+                                    mask: '1234',
+                                    appwriteItemId: 'mock-1',
+                                    sharebleId: 'mock-1',
+                                    sharableId: 'mock-1',
+                                    availableBalance: 2698.12,
+                                    officialName: 'JS Mastery Pro.',
+                                    institutionId: 'ins_mock',
+                                    type: 'depository',
+                                    subtype: 'savings'
+                                }}
+                                userName={`${user?.firstName || 'Adrian'} ${user?.lastName || 'Hajdin'}`}
+                                showBalance={false}
+                                cardTheme="dark"
+                            />
+                        </div>
+                        <div className="absolute right-0 top-8 z-0 w-[90%]">
+                            <BankCard
+                                key="mock-2"
+                                account={{
+                                    id: 'mock-2',
+                                    name: 'Chase Bank',
+                                    currentBalance: 2588.12,
+                                    mask: '1234',
+                                    appwriteItemId: 'mock-2',
+                                    sharebleId: 'mock-2',
+                                    sharableId: 'mock-2',
+                                    availableBalance: 2588.12,
+                                    officialName: 'Chase Bank',
+                                    institutionId: 'ins_mock2',
+                                    type: 'depository',
+                                    subtype: 'checking'
+                                }}
+                                userName={`${user?.firstName || 'Adrian'} ${user?.lastName || 'Hajdin'}`}
+                                showBalance={false}
+                                cardTheme="blue"
+                            />
+                        </div>
                     </div>
                 )}
 

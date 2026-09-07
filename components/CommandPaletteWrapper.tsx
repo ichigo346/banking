@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import CommandPalette from "./CommandPalette";
 import { Command } from "lucide-react";
 
@@ -13,15 +14,16 @@ export const CommandPaletteTrigger = ({ onClick }: { onClick: () => void }) => {
         <button
             type="button"
             onClick={onClick}
-            className="flex items-center justify-between w-full rounded-lg border border-gray-200 bg-gray-25 px-3 py-2 text-14 text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors shadow-xs"
+            className="flex items-center gap-2.5 w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-14 text-gray-400 hover:border-gray-300 hover:text-gray-600 transition-colors shadow-xs"
         >
-            <div className="flex items-center gap-2">
-                <Command className="size-4 text-bankGradient" />
-                <span className="max-xl:hidden">Search actions...</span>
-            </div>
-            <kbd className="hidden max-xl:hidden xl:inline-flex items-center gap-0.5 rounded border border-gray-300 bg-white px-1.5 py-0.5 text-10 font-mono text-gray-400">
-                ⌘K
-            </kbd>
+            <Image
+                src="/icons/search.svg"
+                width={16}
+                height={16}
+                alt="search"
+                className="size-4 shrink-0 opacity-60"
+            />
+            <span className="text-14 font-normal text-gray-500">Search</span>
         </button>
     );
 };
